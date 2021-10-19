@@ -1,6 +1,6 @@
 baseURL: https://tristanchapman.netlify.app/
 languageCode: en-us
-title: Forty
+title: Tristan's Website 
 theme: forty
 googleAnalytics: ''
 disqusShortname: ''
@@ -10,14 +10,14 @@ params:
     subtitle: |-
       A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
       AND RELEASED UNDER THE CREATIVE COMMONS.
-    title: Hi, my name is Tristan
+    title: Hi, my name is Tristan Chapman
   blog: {}
   contact:
     address:
       - city: London
-        country: Country
-        street: Street
-        title: Address
+        country: United Kingdom
+        street: Regent's Park, ,NW1 4SA
+        title: London Business School
     buttonClear: Clear
     buttonSend: Send message
     email:
@@ -77,12 +77,12 @@ params:
         url: elements.html
     menu: Menu
     subtitle: By HTML5 Up
-    title: Forty
+    title: Welcome to my website...
   tiles:
     enable: yes
     showcase:
       - image: lbs.jpg
-        subtitle: Ipsum Dolor Sit Amet
+        subtitle: London Business School
         title: About me
         url: blogs/aliquam
       - image: pic02.jpg
