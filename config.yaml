@@ -93,7 +93,7 @@ params:
       - image: pic06.jpg
         subtitle: 
         title: Bike Rentals Project
-        url: blogs/ipsum
+        url: blogs/bikeproject
   two:
     buttonText: Get Started
     enable: yes
