@@ -92,8 +92,8 @@ params:
         url: blogs/Yieldcurve
       - image: pic06.jpg
         subtitle: 
-        title: Bike Rentals Project
-        url: blogs/bikeproject
+        title: Drinks Consumption
+        url: blogs/Drinks
   two:
     buttonText: Get Started
     enable: yes
