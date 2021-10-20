@@ -5,7 +5,7 @@ theme: forty
 googleAnalytics: ''
 disqusShortname: ''
 params:
-  banner: lbs.jpg
+  banner: 
     buttonText: Get Started
     subtitle: Navigate this site to find out a little about me and my projects...
     title: Hi, my name is Tristan.
