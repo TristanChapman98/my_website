@@ -10,16 +10,20 @@ keywords: ""
 slug: bikeproject
 title: My Bikes R Project
 ---
+\includepdf[pages=-,nup=2,pagecommand={}]{BachelorsDissertation.pdf}
+
+```{r,1}
+\includepdf[pages=-,nup=2,pagecommand={}]{BachelorsDissertation.pdf}
 
 ```
-knitr::include_graphics(path = "BachelorsDissertation.pdf")
-```
 
-```
-\begin{figure}
-\includegraphics[page=1,width=0.5\linewidth]{BachelorsDissertation.pdf}
-\includegraphics[page=2,width=0.5\linewidth]{BachelorsDissertation.pdf}
-\caption{\label{fig:test} Test.}
-\end{figure}
 
-```
+
+#```
+#\begin{figure}
+#\includegraphics[page=1,width=0.5\linewidth]{BachelorsDissertation.pdf}
+#\includegraphics[page=2,width=0.5\linewidth]{BachelorsDissertation.pdf}
+#\caption{\label{fig:test} Test.}
+#\end{figure}
+#
+#```
