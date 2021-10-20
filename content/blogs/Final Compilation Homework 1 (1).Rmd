@@ -1,14 +1,17 @@
 ---
-categories:
-- ""
-- ""
-date: "2017-10-31T21:28:43-05:00"
-description: "Here is an example of one of our R projects where we investigated the changes in the numbers of bike rentals over time"
-draft: false
-image: pic10.jpg
-keywords: ""
-slug: bikeproject
-title: My Bikes R Project
+title: "Homework 1 Group A3"
+author: "Group A3"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    code_folding: show
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r, setup, echo=FALSE}
@@ -333,8 +336,4 @@ plot_german1 <- ggplot(data = german_election_polls)+
   
 plot_german1
 ```
-
-
-
-
 
