@@ -23,7 +23,7 @@ params:
         title: 
     enable: yes
     phone:
-      - phone: 07807107945
+      - phone: "07807107945""
         title: Phone
   custom_css: []
   custom_js: []
@@ -79,20 +79,20 @@ params:
         title: Tempus
         url: blogs/tempus
       - image: lbs.jpeg
-        subtitle: Lorem Etiam Nullam
+        subtitle: 
         title: My CV
-        url: blogs/My CV
+        url: blogs/CV
       - image: pic04.jpg
-        subtitle: Nisl Sed Aliquam
+        subtitle: 
         title: Ipsum
         url: blogs/ipsum
       - image: pic05.jpg
-        subtitle: Yield Curve Project
-        title: Consequat
-        url: blogs/ipsum
+        subtitle: 
+        title: Yield Curve Project
+        url: blogs/Yieldcurve
       - image: pic06.jpg
-        subtitle: Bike Rentals Project
-        title: Etiam
+        subtitle: 
+        title: Bike Rentals Project
         url: blogs/ipsum
   two:
     buttonText: Get Started
