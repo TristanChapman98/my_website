@@ -11,4 +11,8 @@ slug: bikeproject
 title: My Bikes R Project
 ---
 
-Hello.
+\begin{figure}
+\includegraphics[page=1,width=0.5\linewidth]{BachelorsDissertation.pdf}
+\includegraphics[page=2,width=0.5\linewidth]{BachelorsDissertation.pdf}
+\caption{\label{fig:test} Test.}
+\end{figure}
