@@ -23,7 +23,7 @@ params:
         title: 
     enable: yes
     phone:
-      - phone: "07807107945""
+      - phone: "07807107945"
         title: Phone
   custom_css: []
   custom_js: []
