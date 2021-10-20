@@ -12,4 +12,10 @@ image: pic07.jpg
 keywords: ""
 slug: aliquam
 title: Aliquam
+
+\begin{figure}
+\includegraphics[page=1,width=0.5\linewidth]{BachelorsDissertation.pdf}
+\includegraphics[page=2,width=0.5\linewidth]{BachelorsDissertation.pdf}
+\caption{\label{fig:test} Test.}
+\end{figure}
 ---
