@@ -86,10 +86,10 @@ params:
         subtitle: 
         title: Ipsum
         url: blogs/ipsum
-      - image: pic05.jpg
+      - image: image22.jpg
         subtitle: 
         title: Yield Curve Project
-        url: blogs/Yieldcurve
+        url: blogs/Bikes
       - image: pic06.jpg
         subtitle: 
         title: Drinks Consumption
