@@ -70,15 +70,15 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: lbs.jpg
+      - image: profile.jpg
         subtitle: London Business School
         title: About me
         url: blogs/aliquam
-      - image: pic02.jpg
+      - image: photoday.jpeg
         subtitle: Feugiat Amet Tempus
         title: Tempus
         url: blogs/tempus
-      - image: photoday.jpeg
+      - image: lbs.jpeg
         subtitle: Lorem Etiam Nullam
         title: Magna
         url: blogs/magna
