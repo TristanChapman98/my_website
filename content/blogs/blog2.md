@@ -10,5 +10,11 @@ keywords: ""
 slug: CV
 title: My CV
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
 Click here download my CV.
 ---
+
+```
