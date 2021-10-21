@@ -13,6 +13,5 @@ title: Some photo's from LBS
 
 
 
-
-
+(images/my_website/content/1.jpg)
 
