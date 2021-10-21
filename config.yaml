@@ -58,12 +58,12 @@ params:
     links:
       - name: Home
         url: '#'
-      - name: Blogs
-        url: blogs
-      - name: Generic Blog
-        url: blogs/ipsum
-      - name: Elements
-        url: elements.html
+      - name: About me
+        url: blogs/aliquam
+      - name: My CV
+        url: blogs/CV
+      - name: Yield Curve Project
+        url: blogs/Yield
     menu: Menu
     subtitle: 
     title: Welcome to my website...
@@ -82,10 +82,10 @@ params:
         subtitle: London Business School
         title: My CV
         url: blogs/CV
-      - image: pic04.jpg
-        subtitle: 
-        title: Ipsum
-        url: blogs/ipsum
+      #- image: pic04.jpg
+        #subtitle: 
+        #title: Ipsum
+        #url: blogs/ipsum
       - image: image22.jpg
         subtitle: 
         title: Yield Curve Project
