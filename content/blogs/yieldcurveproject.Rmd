@@ -6,12 +6,13 @@ categories:
 date: "2017-10-31T22:26:13-05:00"
 description: We plotted yield curve data
 draft: false
-#image: pic08.jpg
+image: pic08.jpg
 keywords: ""
 slug: Yield
 title: Yield Curve Project in R
-
 ---
+
+
 
 
 ```{r, setup, echo=FALSE}
@@ -61,8 +62,8 @@ knitr::include_graphics(here::here("images", "yield_curve_parable.jpg"), error =
 
 In our case we will look at US data and use the [FRED database](https://fred.stlouisfed.org/) to download historical yield curve rates, and plot the yield curves since 1999 to see when the yield curves flatten. If you want to know more, a very nice article that explains the [yield curve is and its inversion can be found here](https://fredblog.stlouisfed.org/2018/10/the-data-behind-the-fear-of-yield-curve-inversions/). At the end of this challenge you should produce this chart
 
-```{r yield_curve_challenge, echo=FALSE, out.width="100%"}
-knitr::include_graphics(here::here("images", "yield_curve_challenge.png"), error = FALSE)
+```{r yield_curve_chal, echo=FALSE, out.width="100%"}
+#knitr::include_graphics(here::here("images", "yield_curve_challenge.png"), error = FALSE)
 ```
 
 
@@ -265,7 +266,4 @@ NULL
 kostisplot #show the plot that we have created
 
 ```
-
-
-
 
