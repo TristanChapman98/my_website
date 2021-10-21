@@ -1,0 +1,340 @@
+---
+categories:  
+- ""    #the front matter should be like the one found in, e.g., blog2.md. It cannot be like the normal Rmd we used
+- ""
+date: "2021-09-30"
+description: Code to Present Alcohol Consumption Data # the title that will show up once someone gets to this page
+draft: false
+image: pic07.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+
+keywords: ""
+slug: Drinks # slug is the shorthand URL address... no spaces plz
+title: Drinks Consumption
+---
+
+
+```{r, setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+# Load ggplot2, dplyr, and all the other tidyverse packages
+library(tidyverse)
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(grid)
+library(ggpubr)
+library(rvest) # to scrape wikipedia page
+```
+
+#Question:1 Where Do People Drink The Most Beer, Wine And Spirits?
+
+In 2014, FiveThrityEight published an article on alcohol consumption in different countries. We are using its dataset to find the top 25 beer, wine and spirits consumption countries across the world.
+
+```{r, load_alcohol_data}
+library(fivethirtyeight) #
+data(drinks)
+
+```
+
+### Variable Types 
+
+```{r glimpse_skim_data}
+skimr::skim(drinks) #We are using the skimr package to find the summary statistics and variable types in the dataset
+
+```
+The data set has 1 character variable and 4 numeric variables. The dataset contains no missing values but does have some countries with 0 alcohol consumption. 
+
+### Plotting the top 25 Beer Consumption Countries
+
+```{r beer_plot}
+drinks %>% 
+  slice_max(order_by = beer_servings, n = 25) %>% #slicing the dataset and keeping top 25 beer consumption countries
+  ggplot(aes(x = beer_servings, y = fct_reorder(country, beer_servings))) + #Ordering the countires based on consumption
+  geom_col()+ #Creating a clumn chart
+  labs(
+    title = "Top 25 Beer Consumption Countries",
+    x = "Beer Consumption",
+    y = "Country"
+  )+
+  theme_bw()+ 
+  NULL
+
+```
+
+### Plotting the top 25 Wine Consumption Countries
+
+```{r wine_plot}
+
+drinks %>% 
+  slice_max(order_by = wine_servings, n = 25) %>% #slicing the dataset and keeping top 25 wine consumption countries
+  ggplot(aes(x = wine_servings, y = fct_reorder(country, wine_servings))) + #Ordering the countires based on consumption
+  geom_col()+
+  labs(
+    title = "Top 25 Wine Consumption Countries",
+    x = "Wine Consumption",
+    y = "Country"
+  )+
+  theme_bw()+
+  NULL
+
+```
+
+### Plotting the top 25 Spirits Consumption Countries
+
+```{r spirit_plot}
+drinks %>% 
+  slice_max(order_by = spirit_servings, n = 25) %>% #slicing the dataset and keeping top 25 spirits consumption countries
+  ggplot(aes(x = spirit_servings, y = fct_reorder(country, spirit_servings))) + #Ordering the countires based on consumption
+  geom_col()+
+  labs(
+    title = "Top 25 Spirit Consumption Countries",
+    x = "Spirit Consumption",
+    y = "Country"
+  )+
+  theme_bw()+
+  NULL
+```
+
+### Conclusion
+
+The countries depicted in the plots are either producers of the alcohol or are near a country that produces the alcohol. This would indicate that the alcohol consumption of an area is highly correlated with the alcohol that is primarily produced within the area. For example: the Caribbean counties listed under spirit consumption are known for their rum, European countries such as France and Italy are listed under wine consumption and are known for their wine and finally European countries such as Germany and Austria are listed under beer consumption and are known for their beer.
+
+None of the top 25 countries in all three graphs are predominantly Muslim. This would indicate that religion might also play a huge role in the consumption of alcohol in the region.
+
+# Challenge 1: Replicating a chart
+
+```{r challenge1, echo=FALSE, out.width="90%"}
+knitr::include_graphics(here::here("images", "vaxxes_by_state_red_blue_every_county_070321_1.jpeg"), error = FALSE)
+```
+
+Using data from vaccination by county and election to analyze the relationship between people who voted from Trump and there vaccination rate. 
+
+```{r, echo=FALSE, cache=TRUE}
+
+# Download CDC vaccination by county
+cdc_url <- "https://data.cdc.gov/api/views/8xkx-amqh/rows.csv?accessType=DOWNLOAD"
+vaccinations <- vroom(cdc_url) %>% 
+  janitor::clean_names() %>% 
+  filter(fips != "UNK") # remove counties that have an unknown (UNK) FIPS code
+
+# Download County Presidential Election Returns
+# https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ
+election2020_results <- vroom(here::here("data", "countypres_2000-2020.csv")) %>% 
+  janitor::clean_names() %>% 
+  
+  # just keep the results for the 2020 election
+  filter(year == "2020") %>% 
+  
+  # change original name county_fips to fips, to be consistent with the other two files
+  rename (fips = county_fips)
+
+# Download county population data
+population_url <- "https://www.ers.usda.gov/webdocs/DataFiles/48747/PopulationEstimates.csv?v=2232"
+population <- vroom(population_url) %>% 
+  janitor::clean_names() %>% 
+  
+  # select the latest data, namely 2019
+  select(fips = fip_stxt, pop_estimate_2019) %>% 
+  
+  # pad FIPS codes with leading zeros, so they are always made up of 5 characters
+  mutate(fips = stringi::stri_pad_left(fips, width=5, pad = "0"))
+
+```
+```{r}
+# r_trump_vote_percentage
+trump_vote_percentage <- election2020_results %>%  #creates Trump vote data set 
+  filter(candidate == "DONALD J TRUMP", mode=='TOTAL') %>% #filters candidate 
+  select(fips, county_name,candidate,candidatevotes , totalvotes) %>% #selects appropriate columns
+  mutate(trump_vote = candidatevotes / totalvotes) #calculates percentage of trump votes
+
+vaccination_922 <- vaccinations %>% #creates vaccination dataset
+  filter(date == "07/04/2021") %>% #filters by appropriate date
+    mutate(
+    pct_vaccinated=case_when(
+      recip_state %in% c('CA', 'GA', 'IA', 'MI', 'TX') ~ administered_dose1_pop_pct/100, #filters certain states by total doses administered 
+      T ~ series_complete_pop_pct/100)) %>% #filters all other states by fully vacinated population only 
+    select(fips, pct_vaccinated)%>% #selects appropriate columns
+      filter(pct_vaccinated>0.0) #ensures percentage of vaccination is over 0
+
+final_data <- trump_vote_percentage %>% #creates data set
+  left_join(population, by = 'fips') %>% 
+  left_join(vaccination_922, by = 'fips') #joins trump vote and vaccination rate datasets by fips 
+```
+
+```{r fig.align="center", echo = FALSE,fig.width = 5, fig.height= 6}
+#plot
+ggplot(final_data, mapping = aes(x = trump_vote, y = pct_vaccinated, size = pop_estimate_2019)) + #creates graph plot
+  
+#change background color
+geom_rect(data=NULL,show.legend= FALSE,aes(xmin=-Inf,xmax=.45,ymin=-Inf,ymax=Inf),
+                  fill= '#A6A8FB', alpha= 0.05)+ #creates left-region background color for graph
+  geom_rect(data=NULL, show.legend= FALSE, aes(xmin=.45,xmax=.55, ymin=-Inf, ymax= Inf), 
+            fill= "#D2A6D2", alpha=0.05)+ #creates mid-region background color for graph
+  geom_rect(data=NULL,show.legend= FALSE,aes(xmin=.55,xmax=Inf,ymin=-Inf,ymax=Inf),
+                   fill="#FDA7A7", alpha= 0.05)+  #creates right-region background color for graph
+
+#changes color of grid lines  
+theme(panel.grid.major = element_line(colour = "#9a9a9a"))+
+  
+#data
+  geom_point(size=0.5, show.legend = FALSE) + #creates scatter plot
+  geom_point(show.legend= FALSE, aes(size=pop_estimate_2019, alpha=0.25), colour='blue')+ #added twice to create bubbles
+  
+  #dashed lines & text within graph to point out thresholds 
+  geom_hline(yintercept = .85, linetype='dashed') + 
+  annotate("text", x = .13, y= .86, label = "Herd Immunity Threshold (?)", color= 'blue', fontface = "bold")+
+  geom_hline(yintercept = .539, linetype='dashed') + 
+  annotate("text", x = .075, y= .549, label = "Target: 53.9%", color= 'blue', fontface = "bold")+
+  geom_hline(yintercept = .508, linetype='dashed') + 
+  annotate("text", x = .075, y= .518, label = "Actual: 50.8%", color= 'blue', fontface = "bold")+
+  geom_hline(yintercept = .508, linetype='dashed')+
+  
+  #red text in bottom
+  stat_regline_equation(label.y = .09, label.x=.12, aes(label = ..eq.label..), 
+                        size = 4, color= 'red', fontface= 'bold')+ #regression label
+  stat_regline_equation(label.y = .07, label.x=.15, aes(label = ..rr.label..), 
+                        size = 4, color = 'red', fontface= 'bold')+ #R2 label
+  annotate("text", x = .35, y= .08, label = '7/4/21', color= 'red', 
+           fontface = "bold")+ #date label
+  
+  #regression line within graph
+  geom_smooth(method = "lm", se= FALSE, linetype='dotted', show.legend=FALSE)+
+  
+  
+  #graph titles
+  labs(  
+  title = "COVID-19 VACCINATION LEVELS OUT OF TOTAL POPULATION BY COUNTY",
+  subtitle="(most states based on FULLY vaccinated only; CA, GA, IA, MI, & TX based on total doses administered)\n Data via Centers for Disease Control, COVID Act Now, state health depts\n Graph by Charles Gaba / ACASignups.net",
+  x = "2020 Trump Vote %",
+  y = "% of Total Population Vaccinated of Each County")+
+  
+  #format the graph title
+  theme(plot.title = element_text(hjust = 0.5, size = 14, face= 'bold'), plot.subtitle = element_text(hjust = 0.5, face= 'bold'))+ 
+  
+  #Title inside graph
+  annotate("text", x = .5, y= 1.0, label = 'EVERY U.S COUNTY', color= 'black', fontface = "bold", size=8)+
+
+  #axis formatting  
+  scale_y_continuous(breaks = seq(0,1, by = .05), minor_breaks = 0,1,0, labels = scales::percent_format(accuracy = 1), limits= c(0,1)) + #labels- converts axis labels to percentages, breaks- creates intervals of 5%, minor breaks- appropriately formats grid lines 
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1), breaks = seq(0,1, by = .05), minor_breaks = 0,1,0)
+```
+
+# Challenge 2: Opinion polls for the 2021 German elections
+
+In this part, we will reproduce the [election poll tracker for the upcoming German election](https://www.theguardian.com/world/2021/aug/20/german-election-poll-tracker-who-will-be-the-next-chancellor) done by the Guardian newspaper.
+
+We will use that data starting from Jan 2021 and the data source is [Wikipedia](https://en.wikipedia.org/wiki/Opinion_polling_for_the_2021_German_federal_election).
+
+```{r, scrape_wikipedia_polling_data, warnings= FALSE, message=FALSE}
+url <- "https://en.wikipedia.org/wiki/Opinion_polling_for_the_2021_German_federal_election"
+
+# similar graphs and analyses can be found at 
+# https://www.theguardian.com/world/2021/jun/21/german-election-poll-tracker-who-will-be-the-next-chancellor
+# https://www.economist.com/graphic-detail/who-will-succeed-angela-merkel
+
+
+# get tables that exist on wikipedia page 
+tables <- url %>% 
+  read_html() %>% 
+  html_nodes(css="table")
+
+
+# parse HTML tables into a dataframe called polls 
+# Use purr::map() to create a list of all tables in URL
+polls <- map(tables, . %>% 
+             html_table(fill=TRUE)%>% 
+             janitor::clean_names())
+
+
+# list of opinion polls
+german_election_polls <- polls[[1]] %>% # the first table on the page contains the list of all opinions polls
+  slice(2:(n()-1)) %>%  # drop the first row, as it contains again the variable names and last row that contains 2017 results
+  mutate(
+         # polls are shown to run from-to, e.g. 9-13 Aug 2021. We keep the last date, 13 Aug here, as the poll date
+         # and we extract it by picking the last 11 characters from that field
+         end_date = str_sub(fieldwork_date, -11),
+         
+         # end_date is still a string, so we convert it into a date object using lubridate::dmy()
+         end_date = dmy(end_date),
+         
+         # we also get the month and week number from the date, if we want to do analysis by month- week, etc.
+         month = month(end_date),
+         week = isoweek(end_date)
+         )
+```
+
+```{r}
+# to create the 14-day rolling average for each political party
+german_election_polls <- german_election_polls %>% #create dataset of german election polls
+  mutate(union_ma = zoo::rollmean(union, k=14, fill = NA), #calculating rolling average for 6 parties
+         spd_ma = zoo::rollmean(spd, k=14, fill = NA),
+         af_d_ma = zoo::rollmean(af_d, k=14, fill = NA),
+         fdp_ma = zoo::rollmean(fdp, k=14, fill = NA),
+         linke_ma = zoo::rollmean(linke, k=14, fill = NA),
+         grune_ma = zoo::rollmean(grune, k=14, fill = NA),
+         )
+```
+
+```{r fig.width=16}
+# to create scatter plot graph for the poll statistics of each party in 2021 
+plot_german1 <- ggplot(data = german_election_polls)+
+  geom_point(aes(x=end_date,y=union, colour = "Union"), size=2, alpha = 0.3)+
+  geom_point(aes(x=end_date,y=spd, colour = "SPD"), size=2, alpha = 0.3)+
+  geom_point(aes(x=end_date,y=af_d, colour = "AfD"), size=2, alpha = 0.3)+
+  geom_point(aes(x=end_date,y=fdp, colour = "FDP"), size=2, alpha = 0.3)+
+  geom_point(aes(x=end_date,y=linke, colour = "Linke"), size=2, alpha = 0.3)+
+  geom_point(aes(x=end_date,y=grune, colour = "Grune"), size=2, alpha = 0.3)+
+  
+  # to create 14-day rolling average line for the poll statistics of each party in 2021
+  geom_line(aes(x=end_date,y=union_ma, colour = "Union"), size=1.2)+
+  geom_line(aes(x=end_date,y=spd_ma, colour = "SPD"), size=1.2)+
+  geom_line(aes(x=end_date,y=af_d_ma, colour = "AfD"), size=1.2)+
+  geom_line(aes(x=end_date,y=fdp_ma, colour = "FDP"), size=1.2)+
+  geom_line(aes(x=end_date,y=linke_ma, colour = "Linke"), size=1.2)+
+  geom_line(aes(x=end_date,y=grune_ma, colour = "Grune"), size=1.2)+
+ 
+  
+  scale_color_manual(name = "Party",
+                          breaks = c("Union", "SPD", "AfD", "FDP", "Linke", "Grune"),
+                          values = c("Union" = "black", "SPD"="red", "AfD"="blue", "FDP"="yellow", "Linke"="purple", "Grune"="green"))+
+  
+  #to create legend and title for the graph and assign colors to each party to create better visual effect
+  labs(
+    title = "Opinion polling for the 2021 German federal election",
+    subtitle = "Data in 2021",
+    x = "",
+    y = "Percentage(%)"
+  )+
+  
+  #to format the graph
+  theme_bw()+
+  scale_x_date(date_breaks = "months" , date_labels = "%b-%y")+
+  scale_y_continuous(limits = c(0,40), breaks=seq(0,50,5)) + 
+  
+  NULL
+  
+plot_german1
+
+
+```
+
