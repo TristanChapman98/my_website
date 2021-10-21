@@ -7,6 +7,6 @@ description: We plotted yield curve data
 draft: false
 image: pic08.jpg
 keywords: ""
-#slug: Yieldcurve
+#slug:
 title: Yield Curve Project in R
 ---
