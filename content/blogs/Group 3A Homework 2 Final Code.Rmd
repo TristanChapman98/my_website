@@ -235,7 +235,7 @@ Generating a graph using poll data that tracks the president's approval margin
 
 ```{r, cache=TRUE}
 # Import approval polls data directly off fivethirtyeight website
-approval_polllist <- read_csv('approval_polllist.csv') 
+approval_polllist <- read_csv('approval_polllist.csv')
 
 glimpse(approval_polllist)
 
