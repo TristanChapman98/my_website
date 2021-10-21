@@ -75,11 +75,11 @@ params:
         title: About me
         url: blogs/aliquam
       - image: photoday.jpeg
-        subtitle: Feugiat Amet Tempus
-        title: Tempus
+        subtitle: My Friends
+        title: Photo Day
         url: blogs/tempus
       - image: lbs.jpeg
-        subtitle: 
+        subtitle: London Business School
         title: My CV
         url: blogs/CV
       - image: pic04.jpg
@@ -90,10 +90,10 @@ params:
         subtitle: 
         title: Yield Curve Project
         url: blogs/Yield
-      - image: pic06.jpg
-        subtitle: 
-        title: Drinks Consumption
-        url: blogs/Drinks
+     # - #image: pic06.jpg
+        #subtitle: 
+      #  title: 
+     #   url: blogs/Drinks
   two:
     buttonText: Get Started
     enable: yes
