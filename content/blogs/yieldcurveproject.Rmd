@@ -6,7 +6,7 @@ categories:
 date: "2017-10-31T22:26:13-05:00"
 description: We plotted yield curve data to be able to observe inversions across time.
 draft: false
-image: 
+image: ""
 keywords: ""
 slug: Yield
 title: Yield Curve Project in R
