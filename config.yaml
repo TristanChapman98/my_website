@@ -86,7 +86,7 @@ params:
         #subtitle: 
         #title: Ipsum
         #url: blogs/ipsum
-      - image: image22.jpg
+      - image: 
         subtitle: 
         title: Yield Curve Project
         url: blogs/Yield
